@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calculator, Cpu } from 'lucide-react';
+import { Calculator, Cpu, Binary } from 'lucide-react';
 import ToolCard from '../components/ToolCard';
 import { Tool } from '../types';
 
@@ -17,10 +17,17 @@ const tools: Tool[] = [
   },
   {
     id: 'bit-fields',
-    name: 'Register Bit Fields',
+    name: 'Bit Fields',
     description: 'Visualize memory dumps or register values. Converts byte streams (Little Endian) or hex lists into a 32-bit broken-down grid.',
     path: '/bit-fields',
     icon: Cpu
+  },
+  {
+    id: 'memory-dump',
+    name: 'Memory Hex Dump',
+    description: 'View binary files or hex strings as a formatted memory map. Supports configurable row width (4B-32B), Little Endian decoding, and custom base addresses.',
+    path: '/memory-dump',
+    icon: Binary
   }
 ];
 
@@ -37,7 +44,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tools.map((tool) => (
           <ToolCard 
             key={tool.id} 

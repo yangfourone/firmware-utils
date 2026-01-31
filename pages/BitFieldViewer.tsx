@@ -121,7 +121,7 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
         </button>
         <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
           <Cpu className="text-brand-400" size={32} />
-          Register Bit Field Viewer
+          Bit Field Viewer
         </h1>
         <p className="text-slate-400">
           Visualize memory dumps or register values as bit fields. Supports auto-detection of Byte Stream (Little Endian reconstruction) vs Word Lists.
@@ -133,18 +133,7 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
         <div className="order-2 lg:order-1 lg:col-span-1 space-y-4">
            <div className="bg-slate-800 border border-slate-700 rounded-xl p-1 shadow-sm focus-within:ring-2 focus-within:ring-brand-500/50 focus-within:border-brand-500 transition-all">
             <div className="px-4 py-2 bg-slate-800/50 border-b border-slate-700/50 flex justify-between items-center rounded-t-lg gap-2">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <span className="text-xs font-mono text-slate-400 uppercase tracking-wider whitespace-nowrap">Input Data</span>
-                <div className="h-4 w-px bg-slate-700 mx-1 hidden sm:block"></div>
-                <input 
-                  type="text" 
-                  value={startAddr}
-                  onChange={(e) => setStartAddr(e.target.value)}
-                  placeholder="Base Addr (0x...)"
-                  className="bg-slate-900/50 border border-slate-700/50 rounded px-2 py-0.5 text-[10px] font-mono text-brand-400 placeholder:text-slate-600 focus:outline-none focus:border-brand-500/50 focus:bg-slate-900 w-full min-w-[80px] transition-all"
-                  title="Enter base address (e.g. 0x2000). If empty, displays DW offset."
-                />
-              </div>
+              <span className="text-xs font-mono text-slate-400 uppercase tracking-wider whitespace-nowrap">Input Data</span>
               <button onClick={clearInput} className="text-slate-500 hover:text-red-400 transition-colors p-1 flex-shrink-0" title="Clear Data">
                 <Trash2 size={14} />
               </button>
@@ -181,13 +170,23 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
         {/* Visualization Column - Order 1 on mobile (top), Order 2 on Desktop (right) */}
         <div className="order-1 lg:order-2 lg:col-span-3">
           <div className="bg-slate-800/30 border border-slate-700 rounded-xl overflow-hidden flex flex-col h-full">
-             <div className="p-4 border-b border-slate-700 bg-slate-800/80 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-white font-semibold">
+             <div className="p-3 border-b border-slate-700 bg-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-white font-semibold flex-shrink-0">
                     <Grid3X3 size={18} className="text-brand-400"/>
-                    Bit Field Map
+                    <span>Bit Field Map</span>
                 </div>
-                <div className="text-xs text-slate-500 hidden sm:block">
-                    MSB (31) &larr; &rarr; LSB (0)
+
+                {/* Base Address Input */}
+                <div className="flex items-center gap-2">
+                    <span className="text-[10px] sm:text-xs font-mono text-slate-500 uppercase tracking-wider">Base Addr:</span>
+                    <input
+                      type="text"
+                      value={startAddr}
+                      onChange={(e) => setStartAddr(e.target.value)}
+                      placeholder="0x..."
+                      className="w-24 sm:w-32 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-xs font-mono text-brand-400 focus:border-brand-500 outline-none placeholder:text-slate-600 transition-colors"
+                      title="Enter base address (e.g. 0x2000). If empty, displays DW offset."
+                    />
                 </div>
              </div>
              

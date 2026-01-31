@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import MacroCalculator from './pages/MacroCalculator';
 import BitFieldViewer from './pages/BitFieldViewer';
+import MemoryViewer from './pages/MemoryViewer';
 
 const App: React.FC = () => {
   // Simple hash-based routing for a static SPA feel without complex router dependencies
@@ -34,6 +35,8 @@ const App: React.FC = () => {
         return <MacroCalculator onBack={() => navigate('/')} />;
       case '/bit-fields':
         return <BitFieldViewer onBack={() => navigate('/')} />;
+      case '/memory-dump':
+        return <MemoryViewer onBack={() => navigate('/')} />;
       case '/':
       default:
         return <Home onNavigate={navigate} />;
