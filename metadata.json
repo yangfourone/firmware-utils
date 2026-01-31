@@ -1,0 +1,5 @@
+{
+  "name": "Firmware Utils",
+  "description": "A collection of utility tools for firmware and embedded systems engineers, starting with a C Macro Calculator.",
+  "requestFramePermissions": []
+}
