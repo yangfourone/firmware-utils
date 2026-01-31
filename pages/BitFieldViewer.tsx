@@ -8,6 +8,7 @@ interface BitFieldViewerProps {
 
 const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
   const [input, setInput] = useState('');
+  const [startAddr, setStartAddr] = useState('');
   const [words, setWords] = useState<number[]>([]);
   
   // Auto-analyze when input changes (debounced slightly via effect or just direct)
@@ -25,6 +26,26 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
   const clearInput = () => {
     setInput('');
     setWords([]);
+    // Optional: clear start address? User might want to keep it. Keeping it for now.
+  };
+
+  // Determine width of the label column based on whether we are showing full addresses or short DW labels
+  const labelColWidth = startAddr.trim() ? 'w-24' : 'w-12';
+
+  // Helper to calculate label (DWx or Address)
+  const getAddressLabel = (index: number) => {
+    const raw = startAddr.trim();
+    if (!raw) return `DW${index}`;
+
+    // Remove 0x if present
+    const clean = raw.replace(/^0x/i, '');
+    const base = parseInt(clean, 16);
+
+    if (isNaN(base)) return `DW${index}`;
+
+    // Calculate offset (4 bytes per word) and ensure unsigned 32-bit wrap
+    const currentAddr = (base + (index * 4)) >>> 0;
+    return toHex32(currentAddr);
   };
 
   // Helper to render bit columns headers
@@ -51,6 +72,7 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
 
   // Helper to render a single row of bits
   const renderRow = (val: number, index: number) => {
+    const label = getAddressLabel(index);
     const bits = [];
     for (let i = 31; i >= 0; i--) {
       const bit = (val >>> i) & 1;
@@ -73,8 +95,11 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
     }
     return (
       <div className="flex items-center hover:bg-slate-800/50 transition-colors">
-        <div className="w-16 flex-shrink-0 text-xs font-mono text-slate-400 pl-2">
-          DW{index}
+        <div 
+          className={`${labelColWidth} flex-shrink-0 text-[10px] md:text-xs font-mono text-slate-400 pl-2 truncate transition-all duration-300`} 
+          title={label}
+        >
+          {label}
         </div>
         <div className="flex-1 flex border border-slate-700 rounded-sm bg-slate-900 overflow-hidden">
           {bits}
@@ -107,9 +132,20 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
         {/* Input Column - Order 2 on mobile (bottom), Order 1 on Desktop (left) */}
         <div className="order-2 lg:order-1 lg:col-span-1 space-y-4">
            <div className="bg-slate-800 border border-slate-700 rounded-xl p-1 shadow-sm focus-within:ring-2 focus-within:ring-brand-500/50 focus-within:border-brand-500 transition-all">
-            <div className="px-4 py-2 bg-slate-800/50 border-b border-slate-700/50 flex justify-between items-center rounded-t-lg">
-              <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Input Data</span>
-              <button onClick={clearInput} className="text-slate-500 hover:text-red-400 transition-colors p-1" title="Clear">
+            <div className="px-4 py-2 bg-slate-800/50 border-b border-slate-700/50 flex justify-between items-center rounded-t-lg gap-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <span className="text-xs font-mono text-slate-400 uppercase tracking-wider whitespace-nowrap">Input Data</span>
+                <div className="h-4 w-px bg-slate-700 mx-1 hidden sm:block"></div>
+                <input 
+                  type="text" 
+                  value={startAddr}
+                  onChange={(e) => setStartAddr(e.target.value)}
+                  placeholder="Base Addr (0x...)"
+                  className="bg-slate-900/50 border border-slate-700/50 rounded px-2 py-0.5 text-[10px] font-mono text-brand-400 placeholder:text-slate-600 focus:outline-none focus:border-brand-500/50 focus:bg-slate-900 w-full min-w-[80px] transition-all"
+                  title="Enter base address (e.g. 0x2000). If empty, displays DW offset."
+                />
+              </div>
+              <button onClick={clearInput} className="text-slate-500 hover:text-red-400 transition-colors p-1 flex-shrink-0" title="Clear Data">
                 <Trash2 size={14} />
               </button>
             </div>
@@ -133,8 +169,8 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
                 ) : (
                     words.map((w, idx) => (
                         <div key={idx} className="flex justify-between text-xs font-mono border-b border-slate-700/50 last:border-0 pb-1">
-                            <span className="text-slate-500">DW{idx}</span>
-                            <span className="text-brand-400">{toHex32(w)}</span>
+                            <span className="text-slate-500 select-all">{getAddressLabel(idx)}</span>
+                            <span className="text-brand-400 select-all">{toHex32(w)}</span>
                         </div>
                     ))
                 )}
@@ -150,16 +186,16 @@ const BitFieldViewer: React.FC<BitFieldViewerProps> = ({ onBack }) => {
                     <Grid3X3 size={18} className="text-brand-400"/>
                     Bit Field Map
                 </div>
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-slate-500 hidden sm:block">
                     MSB (31) &larr; &rarr; LSB (0)
                 </div>
              </div>
              
-             <div className="p-4">
-                <div className="w-full">
+             <div className="p-4 overflow-x-auto">
+                <div className="w-full min-w-[600px]">
                     {/* Table Header */}
                     <div className="flex mb-2">
-                        <div className="w-16 flex-shrink-0"></div> {/* Spacer for DW label */}
+                        <div className={`${labelColWidth} flex-shrink-0 transition-all duration-300`}></div> {/* Spacer for DW label */}
                         <div className="flex-1 flex px-[1px]">
                             {renderHeaders()}
                         </div>

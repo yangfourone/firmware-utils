@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onNavigateHome }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-xs font-mono text-slate-500 hidden sm:block">v1.0.0</span>
+            <span className="text-xs font-mono text-slate-500 hidden sm:block">v1.0.1</span>
           </div>
         </div>
       </header>
