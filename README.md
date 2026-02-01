@@ -26,6 +26,13 @@ Visualizes memory dumps or register values as a structured bit map.
 - **Visualization**: Displays a grid of 32 bits for every Double Word (DW), with visual separators for bytes and nibbles.
 - **Responsive**: Adapts to screen width for easy reading.
 
+### 3. Memory Hex Dump
+View binary files or hex strings as a formatted memory map.
+- **Input Flexibility**: Parse raw hex strings or upload binary files (`.bin`, `.dat`).
+- **formatted Display**: Shows data in a grid with configurable row width (4, 8, 16, or 32 bytes).
+- **Smart Decoding**: Automatically interprets byte streams using **Little Endian** logic for 32-bit word display.
+- **Custom Addressing**: define a custom base address to match your specific memory map.
+
 ## 💻 Tech Stack
 
 - **Framework**: React 19
