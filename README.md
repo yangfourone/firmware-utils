@@ -16,6 +16,7 @@ Evaluates complex C preprocessor macro definitions that standard calculators oft
 - **Syntax Support**: Handles `0x` hex literals, `U/u` unsigned suffixes, and nested parentheses.
 - **Logic**: Uses BigInt arithmetic to simulate integer behavior.
 - **Output**: Provides results in both Decimal and Hexadecimal formats.
+- **Real-time Evaluation**: Updates results instantly as you type, no manual calculation needed.
 - **Copy-Paste**: One-click copying for results.
 
 ### 2. Register Bit Field Viewer
@@ -30,6 +31,8 @@ Visualizes memory dumps or register values as a structured bit map.
 View binary files or hex strings as a formatted memory map.
 - **Input Flexibility**: Parse raw hex strings or upload binary files (`.bin`, `.dat`).
 - **formatted Display**: Shows data in a grid with configurable row width (4, 8, 16, or 32 bytes).
+- **Interactive Inspection**: Click on any data word to view its detailed bit field breakdown in a modal.
+- **Range Control**: Inspect multiple consecutive words at once within the bit field modal.
 - **Smart Decoding**: Automatically interprets byte streams using **Little Endian** logic for 32-bit word display.
 - **Custom Addressing**: define a custom base address to match your specific memory map.
 

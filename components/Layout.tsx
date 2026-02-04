@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onNavigateHome }) => {
       {/* Navbar */}
       <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-black/80 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div 
+          <div
             className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={onNavigateHome}
           >
@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onNavigateHome }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-xs font-mono text-slate-500 hidden sm:block">v1.0.2</span>
+            <span className="text-xs font-mono text-slate-500 hidden sm:block">v1.0.3</span>
           </div>
         </div>
       </header>
